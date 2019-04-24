@@ -232,16 +232,14 @@ def _argsfromspec(spec, replace_defaults=True):
     varargs = spec.varargs
     varkw = spec.varkw
     if spec.kwonlydefaults:
-        split = len(spec.kwonlydefaults)
-        kwonlyargs = spec.kwonlyargs[:-split]
+        kwonlyargs = spec.kwonlydefaults.keys()
         if replace_defaults:
             kwonlyargs_optional = [
-                (kw, i) for i, kw in enumerate(spec.kwonlyargs[-split:])]
+                (kw, i) for i, kw in enumerate(kwonlyargs)]
         else:
             kwonlyargs_optional = list(spec.kwonlydefaults.items())
     else:
         kwonlyargs, kwonlyargs_optional = spec.kwonlyargs, []
-
     return ', '.join(filter(None, [
         ', '.join(positional),
         ', '.join('{0}={1}'.format(k, v) for k, v in optional),
